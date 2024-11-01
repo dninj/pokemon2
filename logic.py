@@ -7,7 +7,7 @@ class Pokemon:
     pokemons = {}
     # Инициализация объекта (конструктор)
     def __init__(self, pokemon_trainer):
-
+        self.last_feed_time  = datetime.now()
         self.pokemon_trainer = pokemon_trainer   
 
         self.pokemon_number = randint(1,1000)
@@ -59,9 +59,22 @@ class Pokemon:
             enemy.hp = 0
             return f"Победа @{self.pokemon_trainer} над @{enemy.pokemon_trainer}! "
 
+    def feed(self, feed_interval = 20, hp_increase = 10 ):
+        now_time = datetime.current()  
+        delta_time = timedelta(seconds=feed_interval)  
+        if (now_time- self.last_feed_time) > delta_time:
+            self.hp += hp_increase
+            self.last_feed_time = now_time
+            return f"Здоровье покемона увеличено. Текущее здоровье: {self.hp}"
+        else:
+            return f"Следующее время кормления покемона: {now_time+delta_time}"          
+
+
 class Wizard(Pokemon):
     def info(self):
         return f"Это покемон волшебник"
+    def feed(self):
+        return super().feed(feed_interval=10)     
 
 
 
@@ -76,3 +89,5 @@ class Fighter(Pokemon):
         result = super().attack(enemy)
         self.сила -= super_power
         return result + f"\nБоец применил супер-атаку силой:{super_power} "
+        def feed(self):
+        return super().feed(hp_increase=20) 
