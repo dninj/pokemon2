@@ -33,6 +33,23 @@ def attack(message):
             bot.send_message(message.chat.id, "Чтобы атаковать, нужно пригласиь другого на бой ")
 
 
+@bot.message_handler(commands=['info'])
+def info(message):
+    if message.from_user.username in Pokemon.pokemons.keys():
+        pok = Pokemon.pokemons[message.from_user.username]
+        
+        bot.send_message(message.chat.id, pok.info())
+
+@bot.message_handler(commands=['feed'])
+def feed_pok(message):
+    if message.from_user.username in Pokemon.pokemon.keys():
+         pok = Pokemon.pokemons[message.from_user.username]
+         response = pok.feed()
+         bot.send_message(message.chat.id, response())
+    else:
+         bot.send_message(message.chat.id, "у вас нет покемона ")
+
+
 
 
 bot.infinity_polling(none_stop=True)
